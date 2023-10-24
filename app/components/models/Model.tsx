@@ -112,21 +112,21 @@ const Model: React.FC<ModelProps> = ({
 					>
 						<div
 							className="
-                            translate
-                              h-full
-                              lg:h-auto
-                              md:h-auto
-                              border-0
-                              rounded-lg
-                              shadow-lg
-                              relative
-                              flex
-                              flex-col
-                              w-full
-                              bg-white
-                              outline-none
-                              focus:outline-none
-                        "
+								translate
+								h-full
+								lg:h-auto
+								md:h-auto
+								border-0
+								rounded-lg
+								shadow-lg
+								relative
+								flex
+								flex-col
+								w-full
+								bg-white
+								outline-none
+								focus:outline-none
+                        	"
 						>
 							{/*header*/}
 							<div

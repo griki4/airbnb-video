@@ -3,7 +3,8 @@ import './globals.css'
 import { Nunito } from 'next/font/google'
 import NavBar from '@/app/components/navbar/NavBar'
 import ClientOnly from '@/app/components/ClientOnly'
-import Model from '@/app/components/models/Model'
+import RegisterModel from '@/app/components/models/RegisterModel'
+import ToastProvider from '@/app/providers/ToastProvider'
 
 const font = Nunito({ subsets: ['latin'] })
 
@@ -21,7 +22,8 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={font.className}>
 				<ClientOnly>
-					<Model isOpen actionLabel="Submit" />
+					<ToastProvider />
+					<RegisterModel />
 					<NavBar />
 				</ClientOnly>
 				{children}
