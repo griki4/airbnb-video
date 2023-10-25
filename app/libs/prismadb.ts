@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-import { global } from 'styled-jsx/css'
 
 declare global {
 	var prisma: PrismaClient | undefined
