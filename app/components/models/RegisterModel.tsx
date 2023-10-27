@@ -9,6 +9,7 @@ import { AiFillGithub } from 'react-icons/ai'
 import { signIn } from 'next-auth/react'
 
 import useRegisterModel from '@/app/hooks/useRegisterModel'
+import useLoginModel from "@/app/hooks/useLoginModel";
 import Model from '@/app/components/models/Model'
 import Heading from '@/app/components/Heading'
 import Input from '@/app/components/inputs/Input'
@@ -16,6 +17,7 @@ import Button from '@/app/components/Button'
 
 const RegisterModel = () => {
 	const registerModel = useRegisterModel()
+	const loginModel = useLoginModel()
 	// 定义加载状态
 	const [isLoading, setIsLoading] = useState(false)
 	// 定义用户登录表格
@@ -47,6 +49,11 @@ const RegisterModel = () => {
 				setIsLoading(false)
 			})
 	}
+
+	const toggle = useCallback(() => {
+		registerModel.onClose()
+		loginModel.onOpen()
+	}, [loginModel, registerModel])
 
 	// 主体
 	const bodyContent = (
@@ -104,7 +111,7 @@ const RegisterModel = () => {
 					<div>Already have an account?</div>
 					<div
 						className="text-neutral-800 cursor-pointer hover:underline"
-						onClick={registerModel.onClose}
+						onClick={toggle}
 					>
 						Log in
 					</div>

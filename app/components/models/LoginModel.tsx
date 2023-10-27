@@ -56,6 +56,11 @@ const LoginModel = () => {
 		})
 	}
 
+	const toggle = useCallback(() => {
+		loginModel.onClose()
+		registerModel.onOpen()
+	}, [loginModel, registerModel])
+
 	// 主体
 	const bodyContent = (
 		<div className="flex flex-col gap-4">
@@ -97,12 +102,12 @@ const LoginModel = () => {
 			/>
 			<div className="text-neutral-500 text-center mt-4 font-light">
 				<div className="flex flex-row justify-center items-center gap-2">
-					<div>Already have an account?</div>
+					<div>First use Airbnb?</div>
 					<div
 						className="text-neutral-800 cursor-pointer hover:underline"
-						onClick={registerModel.onClose}
+						onClick={toggle}
 					>
-						Log in
+						Create an account
 					</div>
 				</div>
 			</div>
