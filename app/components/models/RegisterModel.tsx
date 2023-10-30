@@ -9,7 +9,7 @@ import { AiFillGithub } from 'react-icons/ai'
 import { signIn } from 'next-auth/react'
 
 import useRegisterModel from '@/app/hooks/useRegisterModel'
-import useLoginModel from "@/app/hooks/useLoginModel";
+import useLoginModel from '@/app/hooks/useLoginModel'
 import Model from '@/app/components/models/Model'
 import Heading from '@/app/components/Heading'
 import Input from '@/app/components/inputs/Input'

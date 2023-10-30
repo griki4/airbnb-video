@@ -1,16 +1,17 @@
 'use client'
 
 import React from 'react'
-import { SafeUser } from '@/app/types'
-
-import { AiOutlineMenu } from 'react-icons/ai'
-import Avatar from '@/app/components/Avatar'
 import { useCallback, useState } from 'react'
-import MenuItem from '@/app/components/navbar/MenuItem'
+import { AiOutlineMenu } from 'react-icons/ai'
 import { signOut } from 'next-auth/react'
+
+import { SafeUser } from '@/app/types'
+import Avatar from '@/app/components/Avatar'
+import MenuItem from '@/app/components/navbar/MenuItem'
 
 import useRegisterModel from '@/app/hooks/useRegisterModel'
 import useLoginModel from '@/app/hooks/useLoginModel'
+import useRentModel from '@/app/hooks/useRentModel'
 
 interface UserMenuProps {
 	currentUser?: SafeUser | null
@@ -19,16 +20,25 @@ interface UserMenuProps {
 const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 	const registerModel = useRegisterModel()
 	const loginModel = useLoginModel()
+	const rentModel = useRentModel()
 	const [isOpen, setIsOpen] = useState(false)
 	const toggleOpen = useCallback(() => {
 		setIsOpen((value) => !value)
 	}, [])
 
+	const onRentModel = useCallback(() => {
+		if (!currentUser) {
+			return loginModel.onOpen()
+		}
+		// open rent model
+		rentModel.onOpen()
+	}, [currentUser, loginModel, rentModel])
+
 	return (
 		<div className="relative">
 			<div className="flex flex-row items-center gap-3">
 				<div
-					onClick={() => {}}
+					onClick={onRentModel}
 					className="
                         hidden
                         md:block
