@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import dynamic from 'next/dynamic'
 
 import Model from './Model'
 
@@ -9,6 +10,7 @@ import Heading from '@/app/components/Heading'
 import { categories } from '@/app/components/navbar/Categories'
 import CategoryInput from '@/app/components/inputs/CategoryInput'
 import { FieldValues, useForm } from 'react-hook-form'
+import CountrySelector from '@/app/components/inputs/CountrySelector'
 
 enum STEP {
 	CATEGORY = 0,
@@ -43,6 +45,7 @@ const RentModel = () => {
 	})
 	// watch跟踪表格中category属性的最新值，category代表了用户选中的值
 	const category = watch('category')
+	const location = watch('location')
 	// 根据id和value修改useForm中的值
 	const setCustomValue = (id: string, value: any) => {
 		setValue(id, value, {
@@ -51,6 +54,14 @@ const RentModel = () => {
 			shouldValidate: true
 		})
 	}
+
+	const Map = useMemo(
+		() =>
+			dynamic(() => import('../Map'), {
+				ssr: false
+			}),
+		[location]
+	)
 
 	const onBack = () => {
 		setStep((value) => value - 1)
@@ -73,7 +84,7 @@ const RentModel = () => {
 		return 'Back'
 	}, [step])
 
-	const bodyContent = (
+	let bodyContent = (
 		<div className="flex flex-col gap-8">
 			<Heading
 				title="Which of these best describes your place?"
@@ -101,6 +112,24 @@ const RentModel = () => {
 			</div>
 		</div>
 	)
+
+	if (step === STEP.LOCATION) {
+		bodyContent = (
+			<div className="flex flex-col gap-8">
+				<Heading
+					title="Where is your place located?"
+					subtitle="Help guests find you!"
+				/>
+				<CountrySelector
+					value={location}
+					onChange={(value) => {
+						setCustomValue('location', value)
+					}}
+				/>
+				<Map center={location?.latlng} />
+			</div>
+		)
+	}
 
 	return (
 		<Model
