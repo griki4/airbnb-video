@@ -2,16 +2,17 @@
 
 import { useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
+import { FieldValues, useForm } from 'react-hook-form'
 
 import Model from './Model'
 
+import { categories } from '@/app/components/navbar/Categories'
 import useRentModel from '@/app/hooks/useRentModel'
 import Heading from '@/app/components/Heading'
-import { categories } from '@/app/components/navbar/Categories'
 import CategoryInput from '@/app/components/inputs/CategoryInput'
-import { FieldValues, useForm } from 'react-hook-form'
 import CountrySelector from '@/app/components/inputs/CountrySelector'
 import Counter from '@/app/components/inputs/Counter'
+import ImageUpload from '@/app/components/inputs/ImageUpload'
 
 enum STEP {
 	CATEGORY = 0,
@@ -50,6 +51,7 @@ const RentModel = () => {
 	const guestCount = watch('guestCount')
 	const roomCount = watch('roomCount')
 	const bathroomCount = watch('bathroomCount')
+	const imageSrc = watch('imageSrc')
 	// 根据id和value修改useForm中的值
 	const setCustomValue = (id: string, value: any) => {
 		setValue(id, value, {
@@ -161,6 +163,21 @@ const RentModel = () => {
 					value={bathroomCount}
 					title="Bathrooms"
 					subtitle="How many bathrooms do you have?"
+				/>
+			</div>
+		)
+	}
+
+	if (step === STEP.IMAGES) {
+		bodyContent = (
+			<div className="flex flex-col gap-8">
+				<Heading
+					title="Add a photo of your place"
+					subtitle="Show guests what your place looks like!"
+				/>
+				<ImageUpload
+					onChange={(value) => setCustomValue('imageSrc', value)}
+					value={imageSrc}
 				/>
 			</div>
 		)
