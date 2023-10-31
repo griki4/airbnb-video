@@ -1,8 +1,11 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import axios from 'axios'
 import dynamic from 'next/dynamic'
-import { FieldValues, useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 
 import Model from './Model'
 
@@ -13,6 +16,7 @@ import CategoryInput from '@/app/components/inputs/CategoryInput'
 import CountrySelector from '@/app/components/inputs/CountrySelector'
 import Counter from '@/app/components/inputs/Counter'
 import ImageUpload from '@/app/components/inputs/ImageUpload'
+import Input from '@/app/components/inputs/Input'
 
 enum STEP {
 	CATEGORY = 0,
@@ -24,7 +28,9 @@ enum STEP {
 }
 const RentModel = () => {
 	const rentModel = useRentModel()
+	const router = useRouter()
 	const [step, setStep] = useState(STEP.CATEGORY)
+	const [isLoading, setIsLoading] = useState(false)
 	const {
 		register,
 		handleSubmit,
@@ -74,6 +80,28 @@ const RentModel = () => {
 	}
 	const onNext = () => {
 		setStep((value) => value + 1)
+	}
+
+	const onSubmit: SubmitHandler<FieldValues> = (data) => {
+		if (step !== STEP.PRICE) {
+			return onNext()
+		}
+		setIsLoading(true)
+		axios
+			.post('/api/listings', data)
+			.then(() => {
+				toast.success('Listing created!')
+				router.refresh()
+				reset()
+				setStep(STEP.CATEGORY)
+				rentModel.onClose()
+			})
+			.catch((err) => {
+				toast.error('Something went wrong')
+			})
+			.finally(() => {
+				setIsLoading(false)
+			})
 	}
 
 	const actionLabel = useMemo(() => {
@@ -183,12 +211,61 @@ const RentModel = () => {
 		)
 	}
 
+	if (step === STEP.DESCRIPTION) {
+		bodyContent = (
+			<div className="flex flex-col gap-8">
+				<Heading
+					title="How would you descripe your place"
+					subtitle="Short and sweet works best!"
+				/>
+				<Input
+					id="title"
+					label="Title"
+					disabled={isLoading}
+					register={register}
+					errors={errors}
+					required
+				/>
+				<hr />
+				<Input
+					id="description"
+					label="Description"
+					disabled={isLoading}
+					register={register}
+					errors={errors}
+					required
+				/>
+			</div>
+		)
+	}
+
+	if (step === STEP.PRICE) {
+		bodyContent = (
+			<div className="flex flex-col gap-8">
+				<Heading
+					title="Now, set your price"
+					subtitle="How much do you charge per night?"
+				/>
+				<Input
+					id="price"
+					label="Price"
+					formatPrice
+					type="number"
+					disabled={isLoading}
+					register={register}
+					errors={errors}
+					required
+				/>
+			</div>
+		)
+	}
+
 	return (
 		<Model
 			title="Airbnb your Home"
 			isOpen={rentModel.isOpen}
 			onClose={rentModel.onClose}
-			onSubmit={onNext}
+			onSubmit={handleSubmit(onSubmit)}
 			actionLabel={actionLabel}
 			secondaryActionLabel={secondaryActionLabel}
 			secondaryAction={step === STEP.CATEGORY ? undefined : onBack}

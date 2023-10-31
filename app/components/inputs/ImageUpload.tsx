@@ -17,9 +17,12 @@ interface ImageUploadProps {
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
-	const handleUpload = useCallback((result: any) => {
+	const handleUpload = useCallback(
+		(result: any) => {
 			onChange(result.info.secure_url)
-		}, [onChange])
+		},
+		[onChange]
+	)
 
 	return (
 		<CldUploadWidget
