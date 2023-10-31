@@ -48,7 +48,7 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
 			{ skipNull: true }
 		)
 		router.push(url)
-	}, [params, label])
+	}, [params, label, router])
 	return (
 		<div
 			onClick={handleClick}
