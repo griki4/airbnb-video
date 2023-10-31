@@ -1,14 +1,19 @@
 import ClientOnly from '@/app/components/ClientOnly'
 import Container from '@/app/components/Container'
-import EmptyState from "@/app/components/EmptyState";
+import EmptyState from '@/app/components/EmptyState'
+import ListingCard from '@/app/components/listings/listingCard'
 
-export default function Home() {
-	const isEmpty = false
+import getCurrentUser from '@/app/actions/getCurrentUser'
+import getListings from '@/app/actions/getListings'
 
-	if (!isEmpty) {
+export default async function Home() {
+	// 获取用户填入的房屋数据，在服务端组件中
+	const listings = await getListings()
+	const currentUser = await getCurrentUser()
+	if (listings.length === 0) {
 		return (
 			<ClientOnly>
-				<EmptyState showReset/>
+				<EmptyState showReset />
 			</ClientOnly>
 		)
 	}
@@ -28,7 +33,17 @@ export default function Home() {
 						2xl:grid-cols-6
 						gap-8
 					"
-				></div>
+				>
+					{listings.map((listing: any) => {
+						return (
+							<ListingCard
+								currentUser={currentUser}
+								key={listing.id}
+								data={listing}
+							/>
+						)
+					})}
+				</div>
 			</Container>
 		</ClientOnly>
 	)
