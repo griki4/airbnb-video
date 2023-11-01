@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import prisma from '@/app/libs/prismadb'
 import getCurrentUser from '@/app/actions/getCurrentUser'
 
-// 处理 /api/listing 接口的POST请求
+// 处理 /api/listings 接口的POST请求
 export async function POST(request: Request) {
 	// 获取当前用户
 	const currentUser = await getCurrentUser()
