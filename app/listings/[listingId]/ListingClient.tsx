@@ -7,8 +7,7 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { differenceInCalendarDays, eachDayOfInterval } from 'date-fns'
 
-import { Reservation } from '@prisma/client'
-import { SafeListing, SafeUser } from '@/app/types'
+import { SafeListing, SafeUser, SafeReservation } from '@/app/types'
 
 import Container from '@/app/components/Container'
 import ListingHead from '@/app/components/listings/ListingHead'
@@ -25,7 +24,7 @@ const initialDateRange = {
 }
 
 interface ListingClientProps {
-	reservation?: Reservation[]
+	reservation?: SafeReservation[]
 	listing: SafeListing & {
 		user: SafeUser
 	}
