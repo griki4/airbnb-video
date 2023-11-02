@@ -6,9 +6,15 @@ import ListingCard from '@/app/components/listings/listingCard'
 import getCurrentUser from '@/app/actions/getCurrentUser'
 import getListings from '@/app/actions/getListings'
 
-export default async function Home() {
+import { IListingsParams } from '@/app/actions/getListings'
+
+interface HomeProps {
+	searchParams: IListingsParams
+}
+
+const Home = async ({ searchParams }: HomeProps) => {
 	// 获取用户填入的房屋数据，在服务端组件中
-	const listings = await getListings()
+	const listings = await getListings(searchParams)
 	const currentUser = await getCurrentUser()
 	if (listings.length === 0) {
 		return (
@@ -48,3 +54,5 @@ export default async function Home() {
 		</ClientOnly>
 	)
 }
+
+export default Home
