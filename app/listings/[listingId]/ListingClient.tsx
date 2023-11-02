@@ -82,6 +82,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
 			})
 	}, [totalPrice, dateRange, listing?.id, router, currentUser, loginModel])
 
+	// @ts-ignore
 	const category = useMemo(() => {
 		return categories.find((items) => items.label === listing.category)
 	}, [listing.category])
