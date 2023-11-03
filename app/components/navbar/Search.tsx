@@ -19,6 +19,7 @@ const Search = () => {
 	const endDate = params?.get('endDate')
 	const guestCount = params?.get('guestCount')
 
+	// @ts-ignore
 	const locationLabel = useMemo(() => {
 		if (locationValue) {
 			return getByValue(locationValue as string)?.label
