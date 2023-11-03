@@ -1,21 +1,20 @@
-import ClientOnly from '@/app/components/ClientOnly'
 import Container from '@/app/components/Container'
+import ListingCard from "@/app/components/listings/listingCard";
 import EmptyState from '@/app/components/EmptyState'
-import ListingCard from '@/app/components/listings/listingCard'
 
+import getListings, { IListingsParams } from '@/app/actions/getListings'
 import getCurrentUser from '@/app/actions/getCurrentUser'
-import getListings from '@/app/actions/getListings'
-
-import { IListingsParams } from '@/app/actions/getListings'
+import ClientOnly from './components/ClientOnly'
 
 interface HomeProps {
 	searchParams: IListingsParams
 }
+export const dynamic = 'force-dynamic'
 
 const Home = async ({ searchParams }: HomeProps) => {
-	// 获取用户填入的房屋数据，在服务端组件中
 	const listings = await getListings(searchParams)
 	const currentUser = await getCurrentUser()
+
 	if (listings.length === 0) {
 		return (
 			<ClientOnly>
@@ -38,17 +37,15 @@ const Home = async ({ searchParams }: HomeProps) => {
 						xl:grid-cols-5
 						2xl:grid-cols-6
 						gap-8
-					"
+          			"
 				>
-					{listings.map((listing: any) => {
-						return (
-							<ListingCard
-								currentUser={currentUser}
-								key={listing.id}
-								data={listing}
-							/>
-						)
-					})}
+					{listings.map((listing: any) => (
+						<ListingCard
+							currentUser={currentUser}
+							key={listing.id}
+							data={listing}
+						/>
+					))}
 				</div>
 			</Container>
 		</ClientOnly>
